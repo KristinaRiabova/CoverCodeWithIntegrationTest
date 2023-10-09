@@ -21,8 +21,14 @@ def format_date_string(date_string):
             dash_count = 0
         else:
             formatted_date_string += char
-    return formatted_date_string
 
+
+    try:
+        datetime.strptime(formatted_date_string, "%Y-%m-%dT%H:%M")
+    except ValueError:
+        raise ValueError("Invalid date string format")
+
+    return formatted_date_string
 
 
 date_format = "%Y-%m-%dT%H:%M"
@@ -65,12 +71,12 @@ def update_user_data():
                                 user_data_storage[user_id].append([current_time, last_seen_datetime])
 
             else:
-                print("Некорректный формат данных:", data)
+                print("Incorrect data format:", data)
 
-            print("Ожидание 30 секунд перед следующей попыткой...")
+            print("Wait 30 seconds before trying again...")
             time.sleep(30)
         except Exception as e:
-            print("Ошибка при обновлении данных:", repr(e))
+            print("Error when updating data:", repr(e))
 
 
 @app.route('/user_intervals', methods=['GET'])

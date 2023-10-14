@@ -43,6 +43,18 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+    def test_get_users_online_data(self):
+        response = requests.get("http://127.0.0.1:5000/api/stats/users?date=2023-10-13T18:44")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['usersOnline'], 0)
+    def test_invalid_date_format(self):
+        response = requests.get("http://127.0.0.1:5000/api/stats/users?date=invalid_date_format")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("error", data)
+
+
 
 
 if __name__ == '__main__':

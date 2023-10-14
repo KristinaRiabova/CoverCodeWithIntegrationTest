@@ -21,17 +21,19 @@ class TestAppIntegration(unittest.TestCase):
         time.sleep(5)
 
     def test_api_predictions_users(self):
-
         response = requests.get('http://localhost:5000/api/predictions/users', params={'date': '2023-10-10T12:00'})
-
-
         self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn('usersOnline', data)
 
-
+    def test_api_user_intervals(self):
+        response = requests.get('http://localhost:5000/user_intervals')
+        self.assertEqual(response.status_code, 200)
         data = response.json()
 
 
-        self.assertIn('usersOnline', data)
+        self.assertTrue(isinstance(data, dict))
+
 
 
 
